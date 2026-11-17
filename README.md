@@ -21,7 +21,7 @@ pipeline engineers who run render farms. See [docs/product/vision.md](docs/produ
 |---|---|---|
 | Scene | Render document, scene sources, scene graph, collections, assets, render setups | [01-scene.md](docs/product/capabilities/01-scene.md) |
 | Cameras | Projections, optics, exposure, shutter, clipping | [02-camera.md](docs/product/capabilities/02-camera.md) |
-| Geometry | Meshes, subdivision, displacement, curves, points, splats, instancing, stand-ins | [03-geometry.md](docs/product/capabilities/03-geometry.md) |
+| Geometry | Meshes, subdivision, displacement, NURBS and limit surfaces, curves, points, splats, instancing, stand-ins | [03-geometry.md](docs/product/capabilities/03-geometry.md) |
 | Volumes | Grid volumes, media, atmosphere, volume shading | [04-volume.md](docs/product/capabilities/04-volume.md) |
 | Lights | Light types, units, linking, groups, filters, rigs | [05-light.md](docs/product/capabilities/05-light.md) |
 | Surface shading | OpenPBR surface, layering, shadow catcher, glazing | [06-surface.md](docs/product/capabilities/06-surface.md) |
@@ -38,6 +38,7 @@ pipeline engineers who run render farms. See [docs/product/vision.md](docs/produ
 | Overrides and looks | Looks, override layers, render passes, variants | [17-overrides.md](docs/product/capabilities/17-overrides.md) |
 | Batch and farm | Command-line renderer, distributed rendering, farm worker | [18-batch.md](docs/product/capabilities/18-batch.md) |
 | Host integration | Sessions with Arc products through the Arc Scene contract | [19-host.md](docs/product/capabilities/19-host.md) |
+| Host applications | Hydra render delegate and connectors for other content-creation applications | [25-host-applications.md](docs/product/capabilities/25-host-applications.md) |
 | Architectural studies | Daylight, illuminance, solar studies, panoramas, walkthroughs | [20-studies.md](docs/product/capabilities/20-studies.md) |
 | Libraries | Material, light and environment libraries | [21-library.md](docs/product/capabilities/21-library.md) |
 | Diagnostics | Logging, statistics, profiling, debug views | [22-diagnostics.md](docs/product/capabilities/22-diagnostics.md) |
@@ -89,7 +90,8 @@ Details: [docs/architecture/overview.md](docs/architecture/overview.md),
 | M2 Look development and interactive rendering | 4 | Desktop render view, material editor, looks, imagers, libraries |
 | M3 Hosts, studies and farm | 4 | Rendering inside Arc products, architectural studies, self-hosted farm |
 | M4 GPU device | 5 | Vendor-neutral GPU rendering at parity with the CPU |
-| M5 Production depth | 5 | Path guiding, spectral mode, deep output, splats, plug-ins |
+| M5 Production depth | 5 | Path guiding, spectral mode, deep output, splats, plug-ins, bidirectional mode, exact surfaces |
+| M6 Host applications | 5 | Hydra render delegate and connectors that run the renderer inside other applications |
 
 See [docs/roadmap.md](docs/roadmap.md).
 

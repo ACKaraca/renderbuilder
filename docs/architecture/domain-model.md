@@ -44,7 +44,8 @@ changes.
 | Type | Key properties |
 |---|---|
 | `Prim` | stable identity, path, kind, parent, local transform samples, attributes, render attributes (visibility flags, sidedness, holdout, shadow flags), labels |
-| `Mesh` / `SubdivMesh` | topology, positions samples, normals, UV sets, face material indices, creases, tessellation settings |
+| `Mesh` / `SubdivMesh` | topology, positions samples, normals, UV sets, face material indices, creases, tessellation settings, limit evaluation method and tolerance |
+| `NurbsSurface` | degree, knots, weighted control points, trim loops, deviation tolerance, evaluation method (intersection or tessellation) |
 | `Curves` | basis, vertex counts, positions samples, widths, render mode, attributes |
 | `Points` / `SplatSet` | positions, radii or covariances, opacity, color or harmonics, mode |
 | `Volume` | grids, transform, medium priority |

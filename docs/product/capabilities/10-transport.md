@@ -16,6 +16,8 @@ device, feature matrix.
 | RB-PATH-003 | Transparency handling | Partial opacity is evaluated stochastically; beyond the transparency depth, remaining surfaces are treated as fully transparent so leaves and hair cards do not darken. | T1 | 4 |
 | RB-PATH-004 | Caustic control | Caustic paths are enabled per light and per object, and an optional roughness regularization after diffuse bounces trades a small bias for much lower caustic noise. | T2 | 4 |
 | RB-PATH-005 | Sample clamping | Direct and indirect sample luminance clamps limit fireflies; clamping can include or exclude outputs other than beauty. | T1 | 4 |
+| RB-PATH-026 | Bidirectional integrator mode | An optional per-setup mode traces subpaths from the lights and connects them to camera subpaths, combining all connection strategies by multiple importance sampling. It targets scenes dominated by caustics and indirect light through small openings. The unidirectional integrator stays the default and the reference: both modes converge to the same image, and the setup records the mode in output metadata. Features the mode does not support are listed in its feature matrix and fail validation. | T3 | 5 |
+| RB-PATH-027 | Vertex merging | The bidirectional mode can merge nearby light and camera path vertices, a photon-style density estimate, to render caustics that connection strategies sample poorly. The merge radius shrinks by a fixed schedule so the estimate is consistent, and the remaining bias is reported in output metadata. | T3 | 5 |
 
 ## Light sampling
 

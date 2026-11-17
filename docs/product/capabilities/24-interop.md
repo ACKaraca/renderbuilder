@@ -1,7 +1,7 @@
 # Interoperability
 
 This area covers the open scene, material, volume and image standards RenderBuilder reads and
-writes. Fidelity levels and mapping rules are in
+writes, and how content from other renderers and applications arrives. Fidelity levels and mapping rules are in
 [../../architecture/interoperability.md](../../architecture/interoperability.md).
 
 Domain objects: import, export, mapping, loss report.
@@ -40,3 +40,11 @@ Domain objects: import, export, mapping, loss report.
 |---|---|---|---|---|
 | RB-IO-014 | Independent validation | Written OpenUSD, MaterialX and OpenEXR files pass the independent validators of those projects in continuous integration. | T1 | 4 |
 | RB-IO-015 | Import loss reports | Every import produces a loss report listing unsupported prims, attributes and nodes with their source paths. | T1 | 4 |
+
+## Content from other renderers and applications
+
+| ID | Capability | Behavior | Tier | Phase |
+|---|---|---|---|---|
+| RB-IO-016 | Published scene descriptions | Scene descriptions of other renderers whose format has a published specification or a permissively licensed open reader are read natively behind an `arc-io-*` crate, mapped into the render scene with a loss report (RB-IO-015). | T3 | 5 |
+| RB-IO-017 | Published material libraries | Shader and material libraries of other renderers with a published specification or an open reader import as MaterialX or OpenPBR networks, with a loss report per material (RB-IO-010); constructs without an equivalent are replaced by the diagnostic material. | T3 | 5 |
+| RB-IO-018 | Content through connectors | Scenes and material libraries whose format is neither published nor openly readable are obtained through a connector running inside the application that owns them (RB-HOSTAPP-006, RB-HOSTAPP-008); undocumented formats are not reverse engineered. | T3 | 5 |

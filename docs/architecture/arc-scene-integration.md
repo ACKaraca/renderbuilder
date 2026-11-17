@@ -1,7 +1,7 @@
 # Arc Scene integration
 
-This document describes RenderBuilder's side of the Arc Scene contract: how host products and farm
-workers drive the renderer through sessions, how scenes are updated incrementally, how frames are
+This document describes RenderBuilder's side of the Arc Scene contract: how host products, host
+applications and farm workers drive the renderer through sessions, how scenes are updated incrementally, how frames are
 streamed back, and how renderer faults are isolated from hosts. The contract types and protocol are
 specified in the `arc-scene` crate of [arc-core](https://github.com/ACKaraca/arc-core); suite
 ADR-0010 states why rendering runs out of process.
@@ -12,6 +12,7 @@ ADR-0010 states why rendering runs out of process.
 |---|---|---|
 | Host | ArchBuilder, DraftBuilder (3D), CivilBuilder, SolidBuilder, MeshBuilder, Arc Review, host CLIs | Owns the model; exports the scene as an Arc Scene snapshot and deltas; displays frames. |
 | Session server | `renderbuilder-session`, run by `renderbuilder-cli serve`, by the RenderBuilder desktop application, or spawned by a host | Owns the render scene and engine; applies updates; renders; streams frames. |
+| Host application | A content-creation application that is not an Arc product, driven through a Hydra render delegate or a connector | Owns its scene; the delegate or connector translates it to snapshots and deltas through the host's public API and displays frames inside the host. |
 | Job driver | `renderbuilder-cli worker` and plain CLI renders | Feeds a session from a render package or document instead of a live host. |
 
 A host never links the engine. All communication crosses a process boundary.
@@ -96,6 +97,34 @@ sequenceDiagram
   it in time (RB-DIAG-011).
 - Hostile-input discipline applies to every message: counts, sizes and nesting are bounded and
   validated before allocation; malformed messages close the session with an error.
+
+## Host applications
+
+A Hydra render delegate and host connectors (RB-HOSTAPP-001, RB-HOSTAPP-006) are session clients
+that run inside another application. They use the lifecycle above unchanged and contain no engine
+([ADR 0007](../adr/0007-delegate-and-connectors-without-the-engine.md)); the delegate is loaded by
+any Hydra-capable host, a connector by the one application it is written for, through that
+application's public API only.
+
+| Host event | Contract operation |
+|---|---|
+| Scene opened, or the delegate is selected as the renderer | Spawn or connect, handshake, snapshot (RB-HOSTAPP-003, RB-HOSTAPP-007) |
+| Host change notification (Hydra change tracking, or the host's own change events) | Delta keyed by stable identifier, coalesced per pass (RB-HOSTAPP-011) |
+| Host material, light, camera or render-settings change | Material, light, camera or settings delta (RB-HOSTAPP-008 to 010) |
+| Render view shown, hidden or resized | Render request, cancel, or region update (RB-HOSTAPP-012) |
+| Host command-line or batch export | Render package export or a headless render request (RB-HOSTAPP-014) |
+| Host closes the scene or exits | Close; the session also ends when the host process exits |
+
+- **Identity.** Stable identifiers derive from the host's persistent element identifiers, or from
+  the Hydra prim path, so looks and overrides survive reloads.
+- **Translation limits.** What a connector can read is bounded by the host's public API. Anything it
+  cannot express is listed in a loss report (RB-HOSTAPP-016) and replaced by a placeholder, never
+  approximated silently. Connector and session exchange capability sets (RB-HOSTAPP-015).
+- **Fault handling.** A session fault closes the control channel; the delegate or connector shows the
+  error and restarts the session from its last snapshot and unacknowledged deltas, as for any host.
+  A fault in the connector itself is limited by keeping the connector small and engine free.
+- **Security.** Connectors open no network port and use the same local endpoint and token as any
+  host (RB-HOSTAPP-017).
 
 ## Farm workers
 

@@ -14,7 +14,7 @@ exists.
 |---|---|---|
 | `renderbuilder-model` | Domain (headless) | Render document objects: scene source references, render setups, looks, override layers, collections, studies, snapshots, library links. Evaluation of looks and overrides into a resolved scene description. |
 | `renderbuilder-commands` | Domain (headless) | User-level commands on the model: edit setups, assign looks, add lights, run studies, package, render. |
-| `renderbuilder-io` | Domain (headless) | Mapping from Arc Scene, OpenUSD, MaterialX, glTF, PLY, OBJ, OpenVDB and photometric files into the render scene; render package read and write; loss reports. |
+| `renderbuilder-io` | Domain (headless) | Mapping from Arc Scene, OpenUSD, MaterialX, glTF, PLY, OBJ, OpenVDB, photometric files and other renderers' published scene and material formats into the render scene; render package read and write; loss reports. |
 | `renderbuilder-shade` | Engine (headless) | Shading network compilation: MaterialX and OSL translation into the shading program representation, OpenPBR closure model, constant folding, program cache. Consumed by the CPU and GPU devices. |
 | `renderbuilder-engine` | Engine (headless) | Render scene, acceleration structures, tessellation, texture cache, CPU reference integrator, film and outputs, imagers, denoiser integration, statistics. |
 | `renderbuilder-gpu` | Engine (headless, GPU) | wgpu device: scene upload, ray traversal, wavefront integrator, shading program code generation to WGSL. Optional; phase 5. |
@@ -61,7 +61,8 @@ window.
 | Crate | Used for |
 |---|---|
 | `arc-base` | Identifiers, units (photometric quantities, lengths), tolerances, color types, error types. |
-| `arc-mesh` | Mesh topology, subdivision rules and limit evaluation used by adaptive tessellation. |
+| `arc-mesh` | Mesh topology, subdivision rules and limit evaluation used by adaptive tessellation and limit-surface rendering. |
+| `arc-geom` | NURBS surface evaluation and trim handling used by exact-surface rendering (RB-GEOM-029). |
 | `arc-doc` | The `.renderb` document store, transactions, journal, undo, recovery, external references to scene sources. |
 | `arc-command` | Command registry, automation protocol endpoint, headless runner. |
 | `arc-scene` | The Arc Scene contract types, material model and session protocol definitions. |
@@ -91,7 +92,8 @@ window.
 ### Host rendering
 
 Hosts drive the same session through the Arc Scene contract; see
-[arc-scene-integration.md](arc-scene-integration.md).
+[arc-scene-integration.md](arc-scene-integration.md). Other content-creation applications use a
+Hydra render delegate or a connector as the session client (RB-HOSTAPP-001, RB-HOSTAPP-006).
 
 ### Batch and farm
 
@@ -107,6 +109,8 @@ there.
 | Shading program | `renderbuilder-shade` | A typed, SSA-form intermediate representation of shading networks with closure outputs; interpreted with vectorized evaluation on the CPU and translated to WGSL on the GPU (ADR 0002). |
 | Acceleration structures | `renderbuilder-engine` | Two-level bounding volume hierarchies (instances over prototypes) built in Rust, with a layout shared by the CPU and GPU devices (ADR 0003). |
 | Tessellation | `renderbuilder-engine` | Adaptive, crack-free tessellation of subdivision and displaced surfaces, cached per prim and dicing camera. |
+| Exact surfaces | `renderbuilder-engine` | NURBS surfaces and subdivision limit surfaces rendered by direct ray intersection or by adaptive tessellation refined to a sub-pixel deviation tolerance, with the deviation reported per prim (RB-GEOM-029 to 031). |
+| Host application clients | Connector repository | The Hydra render delegate and host connectors are thin session clients outside this repository's crates; they never link the engine ([ADR 0007](../adr/0007-delegate-and-connectors-without-the-engine.md)). |
 | Texture cache | `renderbuilder-engine` | Tiled mip-mapped cache with a memory budget, background conversion and a content-addressed on-disk store. |
 | Film and outputs | `renderbuilder-engine` | Per-output accumulation buffers, pixel filters, light path expression automata, Cryptomatte ranking, deep sample lists, file writers. |
 | Studies | `renderbuilder-model`, `renderbuilder-engine` | Sun position, sky models, sensor grids evaluated as irradiance probes by the same integrator. |

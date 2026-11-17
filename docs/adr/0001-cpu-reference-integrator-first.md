@@ -1,7 +1,7 @@
 # 0001. CPU reference integrator first, GPU integrator on wgpu held to parity
 
 - Status: Accepted
-- Capabilities: RB-PATH-015, RB-PATH-018, RB-PATH-019, RB-PATH-020, RB-PATH-021
+- Capabilities: RB-PATH-015, RB-PATH-018, RB-PATH-019, RB-PATH-020, RB-PATH-021, RB-PATH-026, RB-PATH-027
 
 ## Context
 
@@ -20,6 +20,10 @@ vendor's API excludes most hardware. The suite already standardizes on wgpu for 
   the CPU. Each device publishes a feature matrix; unsupported features fail validation or fall back
   to the CPU by explicit setup policy, never silently.
 - No vendor-specific GPU API is required for any feature.
+- The unidirectional path tracer is the reference estimator. The optional bidirectional mode
+  (RB-PATH-026, RB-PATH-027) is chosen per setup, never replaces the default, and is measured
+  against the reference: it converges to the same image, its feature matrix is declared, and the
+  bias of vertex merging is recorded in output metadata.
 
 ## Consequences
 
@@ -38,6 +42,8 @@ vendor's API excludes most hardware. The suite already standardizes on wgpu for 
   hardware and conflict with the suite's vendor-neutral principle.
 - **Separate GPU renderer with its own feature set.** Lower coupling, but produces the divergence this
   decision exists to prevent.
+- **Bidirectional integrator as the default.** Better on caustic-heavy scenes, but worse on
+  interiors lit by many lights and harder to keep at parity between devices; offered as a mode.
 
 ## Reopen when
 

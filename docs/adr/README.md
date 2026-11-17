@@ -15,6 +15,7 @@ licensing and others) are in the
 | [0004](0004-renderer-as-session-process.md) | Every entry point drives the renderer through a session | Accepted |
 | [0005](0005-native-libraries-behind-ffi-crates.md) | Native libraries behind isolated FFI crates | Accepted |
 | [0006](0006-render-document-layers-over-sources.md) | The render document layers over scene sources | Accepted |
+| [0007](0007-delegate-and-connectors-without-the-engine.md) | The Hydra delegate and host connectors contain no engine | Accepted |
 
 ## Template
 

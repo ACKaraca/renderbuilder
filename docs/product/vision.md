@@ -37,8 +37,9 @@ standalone for look development, and headless on a render farm.
    given platform, regardless of threads, tiles or interruptions.
 3. **One engine, many entry points.** The desktop application, host viewports, the command line and
    farm workers drive the same engine through the same session interface.
-4. **Open formats only.** OpenUSD, MaterialX, OpenPBR, OSL, OpenVDB, OpenEXR and OpenColorIO are the
-   working vocabulary; nothing requires a proprietary format.
+4. **Open formats first.** OpenUSD, MaterialX, OpenPBR, OSL, OpenVDB, OpenEXR and OpenColorIO are the
+   working vocabulary; no core workflow requires a proprietary format. Content that exists only in
+   another application arrives through a connector running inside that application.
 5. **The scene source stays authoritative.** Looks and overrides layer over the scene and never
    modify the host model.
 6. **The CPU integrator is the reference.** Every other device is measured against it and may not
@@ -53,7 +54,12 @@ cameras, geometry, volumes, lights, surface, hair and stylized shading, shading 
 light transport, adaptive sampling and denoising, outputs, imagers, color management, the
 interactive render view, the material editor and look-development stage, looks and overrides,
 batch and farm rendering, host integration, architectural studies, libraries, diagnostics,
-extensibility and interoperability.
+extensibility and interoperability. Scope also includes running inside other content-creation
+applications, through a Hydra render delegate and through connectors that use each application's
+public API (suite
+[ADR-0017](https://github.com/ACKaraca/arc-suite/blob/main/docs/adr/0017-exchange-connectors-and-licensed-bridges.md)),
+an optional bidirectional integrator mode, and exact rendering of NURBS and subdivision limit
+surfaces.
 
 ## Non-goals
 
@@ -61,12 +67,10 @@ extensibility and interoperability.
 |---|---|
 | Modeling, sculpting, rigging and animation authoring | They belong to MeshBuilder and the other authoring products; RenderBuilder only edits what rendering needs (looks, lights, cameras, setups). |
 | Real-time rasterized rendering as a final-image engine | The real-time viewport is `arc-gpu` in every product; RenderBuilder adds progressive path tracing on top of it, not a second rasterizer. |
-| Plug-ins for third-party content-creation applications | Third-party tools exchange scenes through OpenUSD and MaterialX; maintaining plug-ins for other vendors' hosts would tie releases to their schedules. |
-| Reading other renderers' proprietary scene files and material libraries | They lack published specifications; such content is exchanged through OpenUSD, MaterialX and glTF (ADR-0009 of the suite). |
-| Bidirectional, photon-mapping and cache-based global illumination | One unbiased unidirectional integrator with path guiding keeps behavior predictable and the CPU and GPU implementations at parity. |
+| Reverse engineering undocumented formats of other renderers and applications | It creates a legal problem, so it is the one excluded import path. Formats with a published specification or an open reader are read natively; all other content arrives through a connector inside the application that owns it (RB-IO-016 to RB-IO-018). |
+| Interpolated irradiance and light caches | Path guiding (RB-PATH-010) reuses learned light without interpolation bias or cache artifacts between animation frames, and keeps results deterministic. |
 | Licensing, activation, watermarks and usage metering | The suite is open source and account free; nothing restricts output. |
 | A hosted cloud render service operated by the project | Farm rendering is self-hosted through Arc Hub; operating a paid service is outside the open-source repositories. |
-| Analytic NURBS rendering | Hosts tessellate exact geometry to the requested tolerance before sending it; a second exact-surface path would duplicate `arc-brep`. |
 | Embedded script interpreters | Scripting runs out of process through the automation protocol, as everywhere in the suite. |
 
 ## Positioning
@@ -82,12 +86,15 @@ and daylight tools built into building-design applications.
 | GPU rendering on any vendor's hardware through wgpu, held to parity with the CPU reference by image-comparison tests and a declared feature matrix | RB-PATH-019, RB-PATH-020, RB-PATH-021 |
 | Path guiding and many-light sampling for interiors and scenes with thousands of fixtures | RB-PATH-006, RB-PATH-010, RB-PATH-011 |
 | Bit-identical deterministic output across thread counts, tiles, resumes and distributed merges | RB-PATH-015, RB-NOISE-007, RB-BATCH-012, RB-BATCH-013 |
+| Optional bidirectional mode with vertex merging for caustic-heavy scenes, with the unidirectional integrator as the reference | RB-PATH-026, RB-PATH-027 |
 | Spectral-ready color pipeline with an optional spectral mode | RB-COLOR-010, RB-PATH-024, RB-PATH-025 |
-| Open scene and material formats only, with loss reports on every import | RB-IO-001, RB-IO-008, RB-IO-015 |
+| Open scene and material formats natively, connectors for everything else, with loss reports on every import | RB-IO-001, RB-IO-008, RB-IO-015, RB-IO-018 |
 | Self-hosted render farm through Arc Hub with no credits, per-node licenses or metering | RB-BATCH-015, RB-BATCH-021 |
 | Live, crash-isolated rendering inside every Arc product, from real-time viewport to path-traced final | RB-HOST-001, RB-HOST-005, RB-HOST-008 |
+| A Hydra render delegate and host connectors that run the renderer inside other content-creation applications without loading the engine into them | RB-HOSTAPP-001, RB-HOSTAPP-002, RB-HOSTAPP-006, RB-HOSTAPP-012 |
 | Host semantics (IFC classes, categories, levels, systems) usable directly in look rules | RB-HOST-015, RB-SCENE-017 |
 | The same engine for stills, animation, panoramas, illuminance and solar studies, with a physically valid mode and validated results | RB-STUDY-005, RB-STUDY-007, RB-STUDY-010, RB-STUDY-012 |
+| NURBS and subdivision limit surfaces rendered to a sub-pixel tolerance | RB-GEOM-029, RB-GEOM-030, RB-GEOM-031 |
 | Automatic, content-addressed texture conversion shared across renders and farm workers | RB-TEX-009, RB-TEX-011 |
 | Building-material appearance templates mapped to OpenPBR with real-world scale | RB-LIB-007, RB-TEX-007 |
 | Temporal denoising and component-consistent denoising for flicker-free sequences | RB-NOISE-009, RB-NOISE-011 |

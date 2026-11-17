@@ -26,6 +26,9 @@ unsupported. Fidelity levels follow suite ADR-0009: **view** (geometry and appea
 | IES LM-63, EULUMDAT | Read | Data | Photometric distributions with orientation and flux. | RB-IO-013 |
 | OpenColorIO configuration | Read | Data | Color spaces, displays, views, looks, file rules. | RB-COLOR-001 |
 | Cryptomatte 1.2 | Write | Data | In OpenEXR. | RB-OUT-009 |
+| Hydra scene data | Read | Data | Scene delivered by a Hydra render delegate running in a host. | RB-HOSTAPP-003 |
+| Host application scene | Read | Data | Translated by a connector through the host's public API; edit fidelity of materials where the host exposes definitions. | RB-HOSTAPP-007, RB-HOSTAPP-008 |
+| Other renderers' scene and material formats with a published specification or an open reader | Read | View, data for materials | Native readers behind `arc-io-*` crates, with loss reports. | RB-IO-016, RB-IO-017 |
 | Render package | Read and write | Edit | Manifest, flattened OpenUSD, MaterialX, content-addressed assets. | RB-SCENE-005 |
 | Library package | Read and write | Edit | MaterialX documents, textures, thumbnails, JSON manifest. | RB-LIB-002 |
 | Study results (CSV, JSON) | Write | Data | Sensor values, statistics, legend parameters. | RB-STUDY-008 |
@@ -65,12 +68,24 @@ a default) and whether the item is preserved for re-export. Reports are availabl
 from the CLI and in render statistics. Batch renders can be configured to fail when the loss report
 is not empty.
 
+## Exchange through connectors
+
+Content whose format is neither published nor openly readable is exchanged by a connector running
+inside the user's own licensed copy of the application that owns it, through that application's
+public API (suite
+[ADR-0017](https://github.com/ACKaraca/arc-suite/blob/main/docs/adr/0017-exchange-connectors-and-licensed-bridges.md)).
+The connector sends an Arc Scene snapshot to a session and receives images (RB-HOSTAPP-006,
+RB-IO-018). Hosts that implement the Hydra rendering interface use the render delegate instead
+(RB-HOSTAPP-001). Every translation produces a loss report (RB-HOSTAPP-016).
+
 ## Deliberately unsupported
+
+Reverse engineering undocumented formats, and running compiled or protected scripts and shaders of
+other applications, are excluded because they create a legal problem; the content is obtained
+through a connector or a standard format instead.
 
 | Content | Reason | Exchange instead |
 |---|---|---|
-| Scene files and shader libraries specific to other renderers | No published specification and no stable schema | OpenUSD stages and MaterialX documents exported by the authoring tool |
-| Proprietary material and appearance library files of building-design and content-creation tools | Not published | MaterialX, OpenUSD or glTF exports; appearance templates (RB-LIB-007) |
-| FBX | Requires a proprietary SDK | OpenUSD or glTF |
-| Native files of other content-creation applications | Not published | OpenUSD |
+| Native files of other renderers and applications without a published specification or open reader | Not published | A connector inside the owning application, or OpenUSD and MaterialX exports |
+| FBX | Read through the open reader in `arc-io` when a host sends FBX content; not a native scene source | OpenUSD or glTF preferred |
 | Compiled shader binaries of other renderers | Not portable | OSL source compiled with the OSL compiler, or MaterialX |
