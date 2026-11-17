@@ -13,7 +13,8 @@ every row of file X with tier T1 and phase 4.
 | M2 Look development and interactive rendering | 4 | The desktop application: render view, material editor, looks, imagers, libraries and professional rendering features. |
 | M3 Hosts, studies and farm | 4 | Rendering inside Arc products, architectural studies and the self-hosted farm. |
 | M4 GPU device | 5 | Vendor-neutral GPU rendering at parity with the CPU reference. |
-| M5 Production depth | 5 | Path guiding, spectral mode, deep output, splats, plug-ins and the remaining advanced capabilities. |
+| M5 Production depth | 5 | Path guiding, spectral mode, deep output, splats, plug-ins, bidirectional mode, exact surfaces and the remaining advanced capabilities. |
+| M6 Host applications | 5 | Running the renderer inside other content-creation applications and importing content from other renderers. |
 
 ## M1 Reference renderer (phase 4)
 
@@ -127,7 +128,8 @@ suite's phase 5 GPU path tracing theme.
 RB-GEOM-005, RB-GEOM-015, RB-GEOM-016, RB-GEOM-018, RB-GEOM-023, RB-GEOM-025, RB-VOL-002,
 RB-VOL-011, RB-VOL-012, RB-SURF-021, RB-STYL-005, RB-STYL-010, RB-STYL-011, RB-NODE-020,
 RB-NODE-022, RB-TEX-017, RB-NOISE-011, RB-OUT-010, RB-OUT-011, RB-IMGR-013, RB-IMGR-014,
-RB-BATCH-013, RB-HOST-017, RB-STUDY-011, RB-LIB-012, RB-EXT-004, RB-EXT-006 to 012, RB-IO-007.
+RB-BATCH-013, RB-HOST-017, RB-STUDY-011, RB-LIB-012, RB-EXT-004, RB-EXT-006 to 012, RB-IO-007,
+RB-PATH-026, RB-PATH-027, RB-GEOM-029 to 031.
 
 **Dependencies.** M4 for GPU coverage of new features; `arc-nodes` job graphs; the suite plug-in
 host for WebAssembly plug-ins.
@@ -141,3 +143,31 @@ host for WebAssembly plug-ins.
 - Workflow W6 passes with deep output, and a compositing tool merges the deep images correctly.
 - A procedural plug-in that exceeds its memory limit fails its task without terminating the
   render process.
+- On the caustic corpus, the bidirectional mode converges to the unidirectional reference within
+  tolerance and reaches the adaptive threshold in less time at equal settings; the interior corpus
+  stays on the unidirectional default.
+- NURBS and limit-surface scenes render with a reported maximum deviation below the sub-pixel
+  tolerance, without cracks at patch and trim boundaries, and identically across thread counts.
+
+## M6 Host applications (phase 5)
+
+**Goal.** Run the renderer inside other content-creation applications and bring in content from
+other renderers, without loading the engine into any host.
+
+**Scope.** RB-HOSTAPP-001 to 017, RB-IO-016 to 018.
+
+**Dependencies.** M3 (session protocol, frame ring, render packages); the connector repository
+created with the first connector (suite
+[ADR-0017](https://github.com/ACKaraca/arc-suite/blob/main/docs/adr/0017-exchange-connectors-and-licensed-bridges.md));
+OpenUSD with Hydra for the delegate; M5 for host-selected integrator modes and exact surfaces.
+
+**Exit criteria.**
+
+- The delegate renders a viewport in a Hydra-capable host and in the OpenUSD command-line viewer,
+  and terminating the session process leaves the host running (ADR 0007).
+- A connector renders a scene from inside its host with the render view in the host, updates
+  interactively while the user edits, and produces the same image from a batch export on the farm.
+- Every translation of the connector corpus produces a loss report, and no material is approximated
+  without an entry.
+- Content from a format with a published specification imports with a loss report on the
+  interchange corpus.

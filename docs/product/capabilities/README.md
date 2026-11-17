@@ -22,14 +22,14 @@ Implementation status is never recorded here. It lives in GitHub issues and the 
 |---|---|---|---|
 | [01-scene.md](01-scene.md) | SCENE | Render document, scene sources, scene graph, render attributes, collections, assets, render setups | 25 |
 | [02-camera.md](02-camera.md) | CAM | Projections, optics, exposure and shutter, camera utilities | 22 |
-| [03-geometry.md](03-geometry.md) | GEOM | Meshes, subdivision, displacement, curves, points, splats, instancing, stand-ins, procedurals | 28 |
+| [03-geometry.md](03-geometry.md) | GEOM | Meshes, subdivision, displacement, NURBS and limit surfaces, curves, points, splats, instancing, stand-ins, procedurals | 31 |
 | [04-volume.md](04-volume.md) | VOL | Grid volumes, media, atmosphere, volume shading and outputs | 13 |
 | [05-light.md](05-light.md) | LIGHT | Light types, units, linking and groups, light filters, rigs | 28 |
 | [06-surface.md](06-surface.md) | SURF | OpenPBR surface, interchange surfaces, layering, compositing and special materials | 21 |
 | [07-hair-stylized.md](07-hair-stylized.md) | STYL | Hair and fur shading, toon, contours and technical illustration | 11 |
 | [08-shading-nodes.md](08-shading-nodes.md) | NODE | Shading network model, compilation and utility nodes | 22 |
 | [09-texture.md](09-texture.md) | TEX | Image textures, texture cache, procedural textures, baking | 17 |
-| [10-transport.md](10-transport.md) | PATH | Integrator, light sampling, path guiding, determinism, devices, spectral mode | 25 |
+| [10-transport.md](10-transport.md) | PATH | Integrator, bidirectional mode, light sampling, path guiding, determinism, devices, spectral mode | 27 |
 | [11-adaptive-denoise.md](11-adaptive-denoise.md) | NOISE | Progressive and adaptive sampling, stop conditions, denoising | 13 |
 | [12-output.md](12-output.md) | OUT | Output channels, light path expressions, Cryptomatte, deep data, image formats | 16 |
 | [13-imager.md](13-imager.md) | IMGR | Imagers, light mixer and post-processing | 14 |
@@ -43,8 +43,9 @@ Implementation status is never recorded here. It lives in GitHub issues and the 
 | [21-library.md](21-library.md) | LIB | Material, light and environment libraries | 12 |
 | [22-diagnostics.md](22-diagnostics.md) | DIAG | Logging, statistics, reports, profiling and debug views | 12 |
 | [23-extensibility.md](23-extensibility.md) | EXT | Automation, custom shading and sandboxed plug-ins | 12 |
-| [24-interop.md](24-interop.md) | IO | OpenUSD, MaterialX, OpenPBR, OpenVDB, OpenEXR and other formats | 15 |
-| | | **Total** | **415** |
+| [24-interop.md](24-interop.md) | IO | OpenUSD, MaterialX, OpenPBR, OpenVDB, OpenEXR, other formats, content from other renderers and applications | 18 |
+| [25-host-applications.md](25-host-applications.md) | HOSTAPP | Hydra render delegate, host connectors, render view inside other applications | 17 |
+| | | **Total** | **440** |
 
 ## Capabilities and issues
 

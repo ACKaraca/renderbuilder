@@ -101,6 +101,30 @@ Path guiding (RB-PATH-010) learns where light comes from:
   importance estimate learned from unoccluded contributions.
 - Memory is bounded by a region budget; when exceeded, the least informative regions merge.
 
+## Bidirectional mode
+
+The unidirectional estimator above is the default and the reference. A setup can select the
+bidirectional mode (RB-PATH-026) for scenes dominated by caustics or by light entering through small
+openings:
+
+- For each sample index, a light subpath is traced from an emitter chosen by the light hierarchy,
+  using its own fixed block of sample dimensions, next to the camera subpath of the same index.
+- Every camera vertex connects to every light vertex with a shadow ray, and light vertices connect
+  to the camera. All strategies, including the unidirectional ones, are combined with multiple
+  importance sampling weights, so the mode converges to the same expected image.
+- Contributions that land on other pixels are written to a per-pass splat buffer that is added to
+  the film in a fixed order at pass boundaries, so thread count and tile order cannot change sums.
+  Because splats leave their tile, the mode supports sample-split distribution (RB-BATCH-013) and
+  single-machine rendering; validation rejects tile-split distribution (RB-BATCH-012) for it.
+- Vertex merging (RB-PATH-027) stores the pass's light vertices in a spatial hash built in
+  sample-index order and lets camera vertices on diffuse and glossy surfaces gather neighbors within
+  a radius, weighted against the connection strategies. The radius follows a fixed shrinking
+  schedule, so the estimate is consistent; the bias at the current radius is recorded in output
+  metadata like every other source of bias.
+- Path guiding is not combined with the mode. The setup records the mode, and validation lists
+  unsupported features in the mode's feature matrix instead of rendering them differently. The mode
+  reaches the GPU device only through the feature ladder below.
+
 ## Adaptive sampling
 
 The film keeps, for the convergence output (beauty by default), two accumulation buffers fed by

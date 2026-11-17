@@ -1,10 +1,10 @@
 # Geometry
 
 This area covers every renderable surface representation: polygon meshes, subdivision and
-displacement, curves, points and Gaussian splats, analytic primitives, instancing, and stand-ins
-that load content on demand.
+displacement, NURBS surfaces and limit surfaces, curves, points and Gaussian splats, analytic
+primitives, instancing, and stand-ins that load content on demand.
 
-Domain objects: mesh, subdivision mesh, curve set, point set, splat set, instancer, prototype,
+Domain objects: mesh, subdivision mesh, NURBS surface, curve set, point set, splat set, instancer, prototype,
 stand-in, procedural.
 
 ## Polygon meshes
@@ -74,3 +74,11 @@ stand-in, procedural.
 | RB-GEOM-026 | Degenerate geometry | Zero-area faces, non-finite positions and out-of-range indices are dropped and counted per prim in the validation report; they never stop the render. | T1 | 4 |
 | RB-GEOM-027 | Large coordinates | Geometry is transformed relative to the camera before conversion to single precision, so georeferenced models far from the origin render without precision artifacts. | T1 | 4 |
 | RB-GEOM-028 | Self-intersection avoidance | Secondary rays start from offset positions computed from bounded floating-point error, so surfaces render without shadow acne and without a user-tuned bias. | T1 | 4 |
+
+## Exact surfaces
+
+| ID | Capability | Behavior | Tier | Phase |
+|---|---|---|---|---|
+| RB-GEOM-029 | NURBS surfaces | Rational and non-rational NURBS surfaces with trim loops render from their exact definition. The renderer evaluates them itself, either by direct ray intersection or by adaptive tessellation refined until the deviation from the exact surface is below a sub-pixel tolerance, chosen per setup. Patches and trims join without cracks. | T3 | 5 |
+| RB-GEOM-030 | Subdivision limit surfaces | The limit surface of a subdivision mesh is evaluated as exact patches or tessellated to a sub-pixel tolerance, so silhouettes, positions and normals match the limit surface at any view distance, including under displacement. | T3 | 5 |
+| RB-GEOM-031 | Tolerance control and statistics | The deviation tolerance is set per setup and per prim in pixels or scene units. Statistics report the largest deviation and the evaluation method per prim, and results are deterministic under RB-PATH-015. | T3 | 5 |

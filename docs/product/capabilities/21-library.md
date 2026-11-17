@@ -13,7 +13,7 @@ Domain objects: library, library item, appearance template, library package, pin
 | RB-LIB-002 | Library package format | A library is a folder or archive of MaterialX documents, textures, thumbnails and a JSON manifest; the format is documented and readable without RenderBuilder. | T1 | 4 |
 | RB-LIB-003 | Linked and copied use | A library item is either copied into the document or linked; a linked item records its version and digest and changes only when the user updates it. | T1 | 4 |
 | RB-LIB-004 | Update report | Documents list linked items for which a newer library version exists, with the differences in parameters. | T2 | 4 |
-| RB-LIB-005 | Library import | Materials import into a library from MaterialX, OpenUSD and glTF files, with a loss report per item. | T1 | 4 |
+| RB-LIB-005 | Library import | Materials import into a library from MaterialX, OpenUSD and glTF files, and from other published formats through RB-IO-017, with a loss report per item. | T1 | 4 |
 | RB-LIB-006 | Thumbnail generation | Thumbnails render in batch on a standard preview object and environment. | T2 | 4 |
 
 ## Appearance templates

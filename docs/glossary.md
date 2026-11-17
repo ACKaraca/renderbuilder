@@ -9,8 +9,10 @@ Terms as used in the RenderBuilder documentation, one line each.
 | Assignment rule | An entry of a look that assigns a material or attribute values to a collection. |
 | Auxiliary buffer | An output such as albedo or normal that guides denoising. |
 | Beauty | The final lit color output of a render. |
+| Bidirectional mode | An optional integrator mode that connects subpaths traced from lights with camera subpaths. |
 | Closure | The result of evaluating a material at a point: a weighted set of scattering lobes. |
 | Collection | A named set of prims defined by explicit members and/or a selector expression. |
+| Connector | A small add-in that runs inside another application, uses its public API and drives a RenderBuilder session. |
 | Contour | A stylized line drawn at discontinuities of identity, normal or depth. |
 | Cryptomatte | An open standard for encoding identifier mattes in OpenEXR files. |
 | Deep image | An image storing a list of depth-ordered samples per pixel. |
@@ -21,6 +23,8 @@ Terms as used in the RenderBuilder documentation, one line each.
 | Film | The set of accumulation buffers for all outputs of a render. |
 | Furnace test | A test scene with uniform white illumination that checks a material neither gains nor loses energy beyond its definition. |
 | Holdout | A prim that cuts a transparent hole in color outputs while still occluding. |
+| Host application | A content-creation application that runs RenderBuilder through a delegate or a connector. |
+| Hydra render delegate | A plug-in that lets a Hydra-capable host use RenderBuilder as a renderer. |
 | Imager | A post-processing operation applied to accumulated images. |
 | Integrator | The algorithm that estimates light transport along paths. |
 | Light group | A named set of lights whose contribution is written to its own outputs. |
@@ -28,12 +32,14 @@ Terms as used in the RenderBuilder documentation, one line each.
 | Light linking | Restricting which prims a light illuminates or which prims cast its shadows. |
 | Light mixer | Post-render adjustment of light group intensity and color. |
 | Light path expression | A regular expression over scattering events that defines an output. |
+| Limit surface | The smooth surface a subdivision mesh converges to under infinite refinement. |
 | Look | A named, ordered set of assignment rules. |
 | Look-development stage | A controlled lighting environment for judging materials. |
 | Loss report | A list of content that an import could not represent. |
 | MaterialX | An open standard for material node graphs and their exchange. |
 | Multiple importance sampling | Combining several sampling strategies with weights that minimize variance. |
 | Next-event estimation | Sampling a light directly from a path vertex and testing visibility with a shadow ray. |
+| NURBS surface | A parametric surface defined by degree, knots and weighted control points, optionally trimmed. |
 | OpenPBR | An open specification of a physically based surface material model. |
 | Output | A named image channel written by a render, with its filter, type and file target. |
 | Override layer | An ordered list of render-time operations over collections that never modifies sources. |
@@ -62,4 +68,5 @@ Terms as used in the RenderBuilder documentation, one line each.
 | Stand-in | A prim that references external content loaded on demand. |
 | Study | A render that answers a design question: illuminance, daylight factor, solar sequence, sun hours, panorama set or walkthrough. |
 | Texture cache | The memory-bounded store of texture tiles at the mip levels lookups need. |
+| Vertex merging | Combining nearby light and camera path vertices as a density estimate. |
 | Worker | A CLI process that renders jobs from Arc Hub or another queue manager. |
