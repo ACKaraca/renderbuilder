@@ -39,6 +39,7 @@ pipeline engineers who run render farms. See [docs/product/vision.md](docs/produ
 | Batch and farm | Command-line renderer, distributed rendering, farm worker | [18-batch.md](docs/product/capabilities/18-batch.md) |
 | Host integration | Sessions with Arc products through the Arc Scene contract | [19-host.md](docs/product/capabilities/19-host.md) |
 | Host applications | Hydra render delegate and connectors for other content-creation applications | [25-host-applications.md](docs/product/capabilities/25-host-applications.md) |
+| Assistance | Optional assistance measured by calibration renders and render statistics, and disclosure of learned filters | [26-assistance.md](docs/product/capabilities/26-assistance.md) |
 | Architectural studies | Daylight, illuminance, solar studies, panoramas, walkthroughs | [20-studies.md](docs/product/capabilities/20-studies.md) |
 | Libraries | Material, light and environment libraries | [21-library.md](docs/product/capabilities/21-library.md) |
 | Diagnostics | Logging, statistics, profiling, debug views | [22-diagnostics.md](docs/product/capabilities/22-diagnostics.md) |

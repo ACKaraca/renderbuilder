@@ -45,7 +45,8 @@ Implementation status is never recorded here. It lives in GitHub issues and the 
 | [23-extensibility.md](23-extensibility.md) | EXT | Automation, custom shading and sandboxed plug-ins | 12 |
 | [24-interop.md](24-interop.md) | IO | OpenUSD, MaterialX, OpenPBR, OpenVDB, OpenEXR, other formats, content from other renderers and applications | 18 |
 | [25-host-applications.md](25-host-applications.md) | HOSTAPP | Hydra render delegate, host connectors, render view inside other applications | 17 |
-| | | **Total** | **440** |
+| [26-assistance.md](26-assistance.md) | ASSIST | Optional assistance: render time and noise explained, settings for a time budget, materials, lighting, cameras and looks from a description, studies, learned filter disclosure | 15 |
+| | | **Total** | **455** |
 
 ## Capabilities and issues
 

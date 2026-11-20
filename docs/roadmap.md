@@ -90,6 +90,8 @@ illuminance questions, and run animation on a self-hosted farm.
 
 - Phase-4 rows of HOST (RB-HOST-001 to 016) and STUDY (RB-STUDY-001 to 010, 012 to 017).
 - RB-BATCH-010, RB-BATCH-012, RB-BATCH-014 to 021.
+- Phase-4 rows of ASSIST (RB-ASSIST-001 to 005, 007 to 011, 013 to 015), offered as each passes its
+  task suite and never gating this milestone.
 
 **Dependencies.** M2; `arc-scene` session protocol and `arc-hub-api` in `arc-core`; the Arc Hub
 render service and Documents module; ArchBuilder (architectural core, phase 2) and SolidBuilder
@@ -128,7 +130,7 @@ suite's phase 5 GPU path tracing theme.
 RB-GEOM-005, RB-GEOM-015, RB-GEOM-016, RB-GEOM-018, RB-GEOM-023, RB-GEOM-025, RB-VOL-002,
 RB-VOL-011, RB-VOL-012, RB-SURF-021, RB-STYL-005, RB-STYL-010, RB-STYL-011, RB-NODE-020,
 RB-NODE-022, RB-TEX-017, RB-NOISE-011, RB-OUT-010, RB-OUT-011, RB-IMGR-013, RB-IMGR-014,
-RB-BATCH-013, RB-HOST-017, RB-STUDY-011, RB-LIB-012, RB-EXT-004, RB-EXT-006 to 012, RB-IO-007,
+RB-BATCH-013, RB-HOST-017, RB-STUDY-011, RB-LIB-012, RB-EXT-004, RB-EXT-006 to 012, RB-ASSIST-006, RB-ASSIST-012, RB-IO-007,
 RB-PATH-026, RB-PATH-027, RB-GEOM-029 to 031.
 
 **Dependencies.** M4 for GPU coverage of new features; `arc-nodes` job graphs; the suite plug-in
